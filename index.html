@@ -1,0 +1,111 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Management System</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color:#f4f4f4;
+            margin:0;
+        }
+
+        header{
+            background-color:#2c3e50;
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        nav{
+            background-color:#34495e;
+            padding:10px;
+            text-align:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:15px;
+        }
+
+        .container{
+            width:80%;
+            margin:20px auto;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:5px;
+        }
+
+        button{
+            padding:10px 15px;
+            background:#3498db;
+            color:white;
+            border:none;
+            cursor:pointer;
+        }
+
+        footer{
+            text-align:center;
+            background:#2c3e50;
+            color:white;
+            padding:10px;
+            margin-top:20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Inventory Management System</h1>
+    <p>Manage Products and Suppliers</p>
+</header>
+
+<nav>
+    <a href="#">Products</a>
+    <a href="#">Add Product</a>
+    <a href="#">Suppliers</a>
+    <a href="#">Add Supplier</a>
+    <a href="#">Login</a>
+</nav>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Product Management</h2>
+        <p>View, add, edit and search products.</p>
+        <button onclick="showMessage()">View Products</button>
+    </div>
+
+    <div class="card">
+        <h2>Supplier Management</h2>
+        <p>Manage supplier information and contacts.</p>
+        <button onclick="showMessage()">View Suppliers</button>
+    </div>
+
+    <div class="card">
+        <h2>Low Stock Alert</h2>
+        <p>Products with quantity below 5 should be highlighted in red.</p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 Inventory Management System
+</footer>
+
+<script>
+function showMessage(){
+    alert("This page will be implemented later.");
+}
+</script>
+
+</body>
+</html>
+```
