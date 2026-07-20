@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Products | Inventory Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="small-logo">📦</div>
+
+            <h2>InventoryMS</h2>
+
+            <p>Inventory System</p>
+
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="dashboard.html">🏠 Dashboard</a>
+            </li>
+
+            <li class="active">
+                <a href="products.html">📦 Products</a>
+            </li>
+
+            <li>
+                <a href="suppliers.html">🚚 Suppliers</a>
+            </li>
+
+            <li>
+                <a href="login.html">🚪 Logout</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main -->
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <h1>Products</h1>
+
+            <p>Manage your inventory products</p>
+
+        </div>
+
+        <div class="table-section">
+
+            <div class="table-top">
+
+                <input
+                    type="text"
+                    placeholder="Search product..."
+                >
+
+                <button>Add Product</button>
+
+            </div>
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+                <tr>
+
+                    <td>1</td>
+                    <td>Laptop</td>
+                    <td>Electronics</td>
+                    <td>$1200</td>
+                    <td>15</td>
+
+                    <td>
+
+                        <span class="status available">
+
+                            In Stock
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button class="edit-btn">Edit</button>
+
+                        <button class="delete-btn">Delete</button>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>2</td>
+                    <td>Mouse</td>
+                    <td>Accessories</td>
+                    <td>$20</td>
+                    <td>3</td>
+
+                    <td>
+
+                        <span class="status low">
+
+                            Low Stock
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button class="edit-btn">Edit</button>
+
+                        <button class="delete-btn">Delete</button>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>3</td>
+                    <td>Keyboard</td>
+                    <td>Accessories</td>
+                    <td>$35</td>
+                    <td>22</td>
+
+                    <td>
+
+                        <span class="status available">
+
+                            In Stock
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button class="edit-btn">Edit</button>
+
+                        <button class="delete-btn">Delete</button>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
