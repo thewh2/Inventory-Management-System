@@ -2,8 +2,8 @@
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  padding: 32px;
-  max-width: 600px;
+  padding: 40px;
+  max-width: 680px;
   margin: 0 auto;
   box-shadow: var(--shadow-sm);
   width: 100%;
@@ -11,36 +11,38 @@
 
 .form-card h2 {
   margin-top: 0;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   color: var(--text-main);
   letter-spacing: -0.5px;
+  font-size: 26px;
+  font-weight: 700;
 }
 
 .product-form, .supplier-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .form-row {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .form-row .form-group {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-main);
 }
@@ -50,10 +52,10 @@
 .form-group input[type="email"],
 .form-group textarea,
 .form-group select {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
   font-family: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -69,13 +71,13 @@
 }
 
 .form-group input[type="file"] {
-  font-size: 13px;
+  font-size: 14px;
   padding: 8px 0;
 }
 
 .current-image-preview img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
@@ -85,17 +87,17 @@
 .form-actions {
   display: flex;
   gap: 16px;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 .save-btn {
   background-color: var(--primary);
   color: #ffffff;
-  padding: 10px 24px;
+  padding: 12px 28px;
   border: none;
   border-radius: var(--radius);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -112,13 +114,16 @@
 .cancel-btn {
   background-color: transparent;
   color: var(--text-main);
-  padding: 10px 24px;
+  padding: 12px 28px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cancel-btn:hover {
@@ -128,7 +133,7 @@
 
 @media (max-width: 640px) {
   .form-card {
-    padding: 20px;
+    padding: 24px;
   }
   .form-row {
     flex-direction: column;
