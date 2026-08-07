@@ -1,3 +1,4 @@
+/* Global Responsiveness and Base Utilities */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
@@ -45,4 +46,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .main-content {
   flex: 1;
+}
+
+/* Global Responsive Adjustments */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px !important;
+  }
 }

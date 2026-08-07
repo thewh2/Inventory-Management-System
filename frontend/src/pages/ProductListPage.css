@@ -9,6 +9,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .header-actions h2 {
@@ -63,6 +65,7 @@
   border: 1px solid var(--border-color);
   margin-bottom: 24px;
   box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
 }
 
 .filter-group {
@@ -70,6 +73,7 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
+  min-width: 220px;
 }
 
 .filter-group label {
@@ -93,13 +97,15 @@
   box-shadow: 0 0 0 3px rgba(65, 171, 93, 0.15);
 }
 
+/* Responsive Table Wrapper */
 .data-table {
   width: 100%;
   border-collapse: collapse;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  overflow: hidden;
+  overflow-x: auto;
+  display: block;
   box-shadow: var(--shadow-sm);
 }
 
@@ -108,6 +114,7 @@
   text-align: left;
   border-bottom: 1px solid var(--border-color);
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .data-table th {
@@ -199,3 +206,10 @@
 .view-btn:hover { background-color: var(--bg-accent); border-color: var(--primary); color: var(--primary-dark); }
 .edit-btn:hover { background-color: var(--primary-hover); }
 .delete-btn:hover { background-color: #dc2626; }
+
+@media (max-width: 640px) {
+  .filter-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

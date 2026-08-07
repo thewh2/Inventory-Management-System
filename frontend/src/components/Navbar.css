@@ -5,6 +5,8 @@
   background-color: var(--primary-dark);
   padding: 14px 32px;
   border-bottom: none;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .navbar-brand a {
@@ -19,6 +21,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .nav-link {
@@ -56,4 +59,22 @@
 .logout-btn:hover {
   background-color: rgba(255,255,255,0.1);
   border-color: rgba(255,255,255,0.5);
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .navbar-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .nav-user {
+    border-left: none;
+    padding-left: 0;
+  }
 }
