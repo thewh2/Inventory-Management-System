@@ -1,6 +1,6 @@
 .page-container {
-  padding: 40px 48px;
-  max-width: 1440px;
+  padding: 32px 40px;
+  max-width: 100%;
   margin: 0 auto;
   width: 100%;
 }
@@ -72,6 +72,7 @@
   margin-bottom: 28px;
   box-shadow: var(--shadow-sm);
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .filter-group {
@@ -264,6 +265,7 @@
   box-shadow: var(--shadow-sm);
   flex-wrap: wrap;
   gap: 16px;
+  width: 100%;
 }
 
 .pagination-info {
