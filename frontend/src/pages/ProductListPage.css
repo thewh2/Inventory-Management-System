@@ -162,6 +162,33 @@
   font-weight: 700;
 }
 
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.in-stock {
+  background-color: var(--success-bg);
+  color: var(--primary-dark);
+  border: 1px solid var(--border-color);
+}
+
+.status-badge.low-stock-status {
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.status-badge.out-of-stock {
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid #fca5a5;
+}
+
 .thumbnail {
   width: 44px;
   height: 44px;

@@ -144,7 +144,7 @@ const EditProductPage = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="price">Price ($) *</label>
+                    <label htmlFor="price">Price (Rs.) *</label>
                     <input
                       type="number"
                       step="0.01"

@@ -49,12 +49,12 @@ const initDB = async () => {
       const s1 = await Supplier.create({
         name: 'Tech World Supplies',
         email: 'contact@techworld.com',
-        phone: '+1-555-0192'
+        phone: '+977 9841234567'
       });
       const s2 = await Supplier.create({
         name: 'Office Depot Solutions',
         email: 'info@officedepot.com',
-        phone: '+1-555-0843'
+        phone: '+977 9851098765'
       });
 
       await Product.create({

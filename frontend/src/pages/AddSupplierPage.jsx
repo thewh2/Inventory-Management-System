@@ -85,7 +85,7 @@ const AddSupplierPage = () => {
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+1 555-0199"
+                placeholder="+977 98XXXXXX"
                 required
               />
             </div>

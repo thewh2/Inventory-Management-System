@@ -50,7 +50,7 @@ const ProductDetailPage = () => {
 
               <div className="detail-info">
                 <p><strong>Description:</strong> {product.description}</p>
-                <p><strong>Price:</strong> ${parseFloat(product.price).toFixed(2)}</p>
+                <p><strong>Price:</strong> Rs. {parseFloat(product.price).toFixed(2)}</p>
                 <p><strong>Quantity:</strong> {product.quantity} {product.quantity < 5 && <span className="low-stock-tag">(Low Stock)</span>}</p>
                 <p><strong>Supplier Name:</strong> {product.Supplier ? product.Supplier.name : 'N/A'}</p>
               </div>

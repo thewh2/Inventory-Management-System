@@ -108,8 +108,9 @@ const ProductListPage = () => {
                 <tr>
                   <th>Image</th>
                   <th>Name</th>
-                  <th>Price ($)</th>
+                  <th>Price (Rs.)</th>
                   <th>Quantity</th>
+                  <th>Status</th>
                   <th>Supplier</th>
                   <th>Actions</th>
                 </tr>
@@ -117,11 +118,12 @@ const ProductListPage = () => {
               <tbody>
                 {filteredProducts.length === 0 ? (
                   <tr>
-                    <td colSpan="6" style={{ textAlign: 'center' }}>No products found.</td>
+                    <td colSpan="7" style={{ textAlign: 'center' }}>No products found.</td>
                   </tr>
                 ) : (
                   filteredProducts.map((product) => {
                     const isLowStock = product.quantity < 5;
+                    const isOutOfStock = product.quantity === 0;
                     return (
                       <tr key={product.id} className={isLowStock ? 'low-stock' : ''}>
                         <td>
@@ -137,10 +139,18 @@ const ProductListPage = () => {
                         </td>
                         <td>
                           <strong>{product.name}</strong>
-                          {isLowStock && <span className="low-stock-badge"> (Low Stock)</span>}
                         </td>
-                        <td>${parseFloat(product.price).toFixed(2)}</td>
+                        <td>Rs. {parseFloat(product.price).toFixed(2)}</td>
                         <td>{product.quantity}</td>
+                        <td>
+                          {isOutOfStock ? (
+                            <span className="status-badge out-of-stock">Out of Stock</span>
+                          ) : isLowStock ? (
+                            <span className="status-badge low-stock-status">Low Stock</span>
+                          ) : (
+                            <span className="status-badge in-stock">In Stock</span>
+                          )}
+                        </td>
                         <td>{product.Supplier ? product.Supplier.name : 'N/A'}</td>
                         <td className="actions-cell">
                           <Link to={`/products/view/${product.id}`} className="view-btn">View</Link>
