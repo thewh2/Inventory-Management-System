@@ -9,6 +9,8 @@ const ProductListPage = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -38,6 +40,11 @@ const ProductListPage = () => {
     fetchSuppliers();
   }, []);
 
+  // Reset to page 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedSupplier]);
+
   const handleDelete = async (id, name) => {
     if (window.confirm(`Are you sure you want to delete this product? ("${name}")`)) {
       try {
@@ -58,6 +65,12 @@ const ProductListPage = () => {
     const matchesSupplier = selectedSupplier === '' || String(product.supplierId) === String(selectedSupplier);
     return matchesSearch && matchesSupplier;
   });
+
+  // Calculate pagination slice
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
@@ -102,73 +115,109 @@ const ProductListPage = () => {
         {loading ? (
           <p>Loading products...</p>
         ) : (
-          <div className="table-wrapper">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Price (Rs.)</th>
-                  <th>Quantity</th>
-                  <th>Status</th>
-                  <th>Supplier</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.length === 0 ? (
+          <>
+            <div className="table-wrapper">
+              <table className="data-table">
+                <thead>
                   <tr>
-                    <td colSpan="7" style={{ textAlign: 'center' }}>No products found.</td>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price (Rs.)</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Supplier</th>
+                    <th>Actions</th>
                   </tr>
-                ) : (
-                  filteredProducts.map((product) => {
-                    const isLowStock = product.quantity < 5;
-                    const isOutOfStock = product.quantity === 0;
-                    return (
-                      <tr key={product.id} className={isLowStock ? 'low-stock' : ''}>
-                        <td>
-                          {product.image ? (
-                            <img
-                              src={`http://localhost:5000/uploads/${product.image}`}
-                              alt={product.name}
-                              className="thumbnail"
-                            />
-                          ) : (
-                            <span className="no-img">No Image</span>
-                          )}
-                        </td>
-                        <td>
-                          <strong>{product.name}</strong>
-                        </td>
-                        <td>Rs. {parseFloat(product.price).toFixed(2)}</td>
-                        <td>{product.quantity}</td>
-                        <td>
-                          {isOutOfStock ? (
-                            <span className="status-badge out-of-stock">Out of Stock</span>
-                          ) : isLowStock ? (
-                            <span className="status-badge low-stock-status">Low Stock</span>
-                          ) : (
-                            <span className="status-badge in-stock">In Stock</span>
-                          )}
-                        </td>
-                        <td>{product.Supplier ? product.Supplier.name : 'N/A'}</td>
-                        <td className="actions-cell">
-                          <Link to={`/products/view/${product.id}`} className="view-btn">View</Link>
-                          <Link to={`/products/edit/${product.id}`} className="edit-btn">Edit</Link>
-                          <button
-                            onClick={() => handleDelete(product.id, product.name)}
-                            className="delete-btn"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {currentProducts.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: 'center' }}>No products found.</td>
+                    </tr>
+                  ) : (
+                    currentProducts.map((product) => {
+                      const isLowStock = product.quantity < 5;
+                      const isOutOfStock = product.quantity === 0;
+                      return (
+                        <tr key={product.id} className={isLowStock ? 'low-stock' : ''}>
+                          <td>
+                            {product.image ? (
+                              <img
+                                src={`http://localhost:5000/uploads/${product.image}`}
+                                alt={product.name}
+                                className="thumbnail"
+                              />
+                            ) : (
+                              <span className="no-img">No Image</span>
+                            )}
+                          </td>
+                          <td>
+                            <strong>{product.name}</strong>
+                          </td>
+                          <td>Rs. {parseFloat(product.price).toFixed(2)}</td>
+                          <td>{product.quantity}</td>
+                          <td>
+                            {isOutOfStock ? (
+                              <span className="status-badge out-of-stock">Out of Stock</span>
+                            ) : isLowStock ? (
+                              <span className="status-badge low-stock-status">Low Stock</span>
+                            ) : (
+                              <span className="status-badge in-stock">In Stock</span>
+                            )}
+                          </td>
+                          <td>{product.Supplier ? product.Supplier.name : 'N/A'}</td>
+                          <td className="actions-cell">
+                            <Link to={`/products/view/${product.id}`} className="view-btn">View</Link>
+                            <Link to={`/products/edit/${product.id}`} className="edit-btn">Edit</Link>
+                            <button
+                              onClick={() => handleDelete(product.id, product.name)}
+                              className="delete-btn"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Component */}
+            {filteredProducts.length > 0 && (
+              <div className="pagination-container">
+                <div className="pagination-info">
+                  Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredProducts.length)} of {filteredProducts.length} entries
+                </div>
+                <div className="pagination-buttons">
+                  <button
+                    className="page-btn"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      className={`page-btn ${currentPage === pageNum ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(pageNum)}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                  <button
+                    className="page-btn"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
