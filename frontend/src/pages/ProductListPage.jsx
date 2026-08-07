@@ -184,8 +184,8 @@ const ProductListPage = () => {
               </table>
             </div>
 
-            {/* Pagination Component */}
-            {filteredProducts.length > 0 && (
+            {/* Pagination Component - Only render when products count > 10 */}
+            {filteredProducts.length > itemsPerPage && (
               <div className="pagination-container">
                 <div className="pagination-info">
                   Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredProducts.length)} of {filteredProducts.length} entries
