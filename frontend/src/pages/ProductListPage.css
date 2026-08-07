@@ -216,41 +216,55 @@
 
 .actions-cell {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
-.view-btn, .edit-btn, .delete-btn {
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
+.action-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   border: none;
+  cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
+  text-decoration: none;
 }
 
-.view-btn {
-  background-color: transparent;
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
+.action-icon-btn.view-btn {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+.action-icon-btn.view-btn:hover {
+  background-color: #0284c7;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
 }
 
-.edit-btn {
+.action-icon-btn.edit-btn {
+  background-color: #e8f5e9;
+  color: var(--primary);
+}
+.action-icon-btn.edit-btn:hover {
   background-color: var(--primary);
   color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(65, 171, 93, 0.35);
 }
 
-.delete-btn {
-  background-color: var(--danger);
+.action-icon-btn.delete-btn {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+.action-icon-btn.delete-btn:hover {
+  background-color: #ef4444;
   color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
 }
-
-.view-btn:hover { background-color: var(--bg-accent); border-color: var(--primary); color: var(--primary-dark); }
-.edit-btn:hover { background-color: var(--primary-hover); }
-.delete-btn:hover { background-color: #dc2626; }
 
 /* Pagination Styles */
 .pagination-container {

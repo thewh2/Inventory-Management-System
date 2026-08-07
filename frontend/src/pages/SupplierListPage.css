@@ -70,3 +70,44 @@
 .data-table tr:last-child td {
   border-bottom: none;
 }
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.action-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.action-icon-btn.edit-btn {
+  background-color: #e8f5e9;
+  color: var(--primary);
+}
+.action-icon-btn.edit-btn:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(65, 171, 93, 0.35);
+}
+
+.action-icon-btn.delete-btn {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+.action-icon-btn.delete-btn:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
@@ -11,10 +11,12 @@ const AddProductPage = () => {
   const [quantity, setQuantity] = useState('');
   const [supplierId, setSupplierId] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [suppliers, setSuppliers] = useState([]);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -27,6 +29,22 @@ const AddProductPage = () => {
     };
     fetchSuppliers();
   }, []);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -171,14 +189,23 @@ const AddProductPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="image">Image Upload * (Required for new product)</label>
+              <label htmlFor="image">Image Upload *</label>
               <input
                 type="file"
                 id="image"
                 accept="image/*"
-                onChange={(e) => setImageFile(e.target.files[0])}
-                required
+                onChange={handleImageChange}
+                ref={fileInputRef}
+                required={!imageFile}
               />
+              {imagePreview && (
+                <div className="image-preview-box">
+                  <img src={imagePreview} alt="Preview" />
+                  <button type="button" className="remove-image-btn" onClick={removeImage} title="Remove image">
+                    ×
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="form-actions">

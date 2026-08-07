@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
@@ -13,11 +13,13 @@ const EditProductPage = () => {
   const [supplierId, setSupplierId] = useState('');
   const [currentImage, setCurrentImage] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [suppliers, setSuppliers] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +46,25 @@ const EditProductPage = () => {
     fetchData();
   }, [id]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removeNewImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const removeCurrentImage = () => {
+    setCurrentImage('');
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -187,11 +208,14 @@ const EditProductPage = () => {
                 <div className="form-group">
                   <label>Current Image</label>
                   {currentImage ? (
-                    <div className="current-image-preview">
+                    <div className="image-preview-box">
                       <img
                         src={`http://localhost:5000/uploads/${currentImage}`}
                         alt="Current Product"
                       />
+                      <button type="button" className="remove-image-btn" onClick={removeCurrentImage} title="Remove image">
+                        ×
+                      </button>
                     </div>
                   ) : (
                     <p className="no-img">No current image</p>
@@ -199,13 +223,22 @@ const EditProductPage = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="image">Replace Image (Optional while editing)</label>
+                  <label htmlFor="image">Replace Image (Optional)</label>
                   <input
                     type="file"
                     id="image"
                     accept="image/*"
-                    onChange={(e) => setImageFile(e.target.files[0])}
+                    onChange={handleImageChange}
+                    ref={fileInputRef}
                   />
+                  {imagePreview && (
+                    <div className="image-preview-box">
+                      <img src={imagePreview} alt="New Preview" />
+                      <button type="button" className="remove-image-btn" onClick={removeNewImage} title="Remove image">
+                        ×
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-actions">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
+import ConfirmModal from '../components/ConfirmModal';
 import './ProductListPage.css';
 
 const ProductListPage = () => {
@@ -14,6 +15,7 @@ const ProductListPage = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchProducts = async () => {
     try {
@@ -45,18 +47,22 @@ const ProductListPage = () => {
     setCurrentPage(1);
   }, [searchQuery, selectedSupplier]);
 
-  const handleDelete = async (id, name) => {
-    if (window.confirm(`Are you sure you want to delete this product? ("${name}")`)) {
-      try {
-        await api.delete(`/products/${id}`);
-        setMessage('Product deleted successfully.');
-        setProducts(products.filter((p) => p.id !== id));
-        setTimeout(() => setMessage(''), 3000);
-      } catch (err) {
-        setError('Failed to delete product.');
-        setTimeout(() => setError(''), 3000);
-      }
+  const openDeleteModal = (id, name) => {
+    setDeleteTarget({ id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await api.delete(`/products/${deleteTarget.id}`);
+      setMessage('Product deleted successfully.');
+      setProducts(products.filter((p) => p.id !== deleteTarget.id));
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setError('Failed to delete product.');
+      setTimeout(() => setError(''), 3000);
     }
+    setDeleteTarget(null);
   };
 
   // Filter products by search name and supplier dropdown
@@ -174,7 +180,7 @@ const ProductListPage = () => {
                               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                             </Link>
                             <button
-                              onClick={() => handleDelete(product.id, product.name)}
+                              onClick={() => openDeleteModal(product.id, product.name)}
                               className="action-icon-btn delete-btn"
                               title="Delete"
                             >
@@ -225,6 +231,14 @@ const ProductListPage = () => {
           </>
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Delete Product"
+        message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };

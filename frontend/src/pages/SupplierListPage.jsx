@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
+import ConfirmModal from '../components/ConfirmModal';
 import './SupplierListPage.css';
 
 const SupplierListPage = () => {
@@ -9,6 +10,7 @@ const SupplierListPage = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchSuppliers = async () => {
     try {
@@ -25,18 +27,22 @@ const SupplierListPage = () => {
     fetchSuppliers();
   }, []);
 
-  const handleDelete = async (id, name) => {
-    if (window.confirm(`Are you sure you want to delete supplier "${name}"? Products belonging to this supplier will also be deleted.`)) {
-      try {
-        await api.delete(`/suppliers/${id}`);
-        setMessage('Supplier deleted successfully.');
-        setSuppliers(suppliers.filter((s) => s.id !== id));
-        setTimeout(() => setMessage(''), 3000);
-      } catch (err) {
-        setError('Failed to delete supplier.');
-        setTimeout(() => setError(''), 3000);
-      }
+  const openDeleteModal = (id, name) => {
+    setDeleteTarget({ id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await api.delete(`/suppliers/${deleteTarget.id}`);
+      setMessage('Supplier deleted successfully.');
+      setSuppliers(suppliers.filter((s) => s.id !== deleteTarget.id));
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setError('Failed to delete supplier.');
+      setTimeout(() => setError(''), 3000);
     }
+    setDeleteTarget(null);
   };
 
   return (
@@ -78,12 +84,15 @@ const SupplierListPage = () => {
                       <td>{supplier.email}</td>
                       <td>{supplier.phone}</td>
                       <td className="actions-cell">
-                        <Link to={`/suppliers/edit/${supplier.id}`} className="edit-btn">Edit</Link>
+                        <Link to={`/suppliers/edit/${supplier.id}`} className="action-icon-btn edit-btn" title="Edit">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </Link>
                         <button
-                          onClick={() => handleDelete(supplier.id, supplier.name)}
-                          className="delete-btn"
+                          onClick={() => openDeleteModal(supplier.id, supplier.name)}
+                          className="action-icon-btn delete-btn"
+                          title="Delete"
                         >
-                          Delete
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                         </button>
                       </td>
                     </tr>
@@ -94,6 +103,14 @@ const SupplierListPage = () => {
           </div>
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Delete Supplier"
+        message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? Products belonging to this supplier will also be deleted.` : ''}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };
