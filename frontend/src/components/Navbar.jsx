@@ -15,9 +15,10 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/products">Inventory System</Link>
+        <Link to="/dashboard">Inventory System</Link>
       </div>
       <div className="navbar-links">
+        <Link to="/dashboard" className="nav-link">Dashboard</Link>
         <Link to="/products" className="nav-link">Products</Link>
         <Link to="/suppliers" className="nav-link">Suppliers</Link>
         {user && <span className="nav-user">User: {user.username}</span>}

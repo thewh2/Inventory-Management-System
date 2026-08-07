@@ -7,12 +7,14 @@ import './ProductFormPage.css';
 const EditProductPage = () => {
   const { id } = useParams();
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
   const [supplierId, setSupplierId] = useState('');
   const [currentImage, setCurrentImage] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const [suppliers, setSuppliers] = useState([]);
   const [error, setError] = useState('');
@@ -31,6 +33,7 @@ const EditProductPage = () => {
 
         const prod = prodRes.data;
         setName(prod.name);
+        setCategory(prod.category || 'Uncategorized');
         setDescription(prod.description);
         setPrice(prod.price);
         setQuantity(prod.quantity);
@@ -50,12 +53,28 @@ const EditProductPage = () => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
+      setImageUrl(''); // Clear URL if file is selected
       setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleImageUrlChange = (e) => {
+    const url = e.target.value;
+    setImageUrl(url);
+    if (url) {
+      setImageFile(null); // Clear file if URL is entered
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      setImagePreview(url);
+    } else {
+      setImagePreview(null);
     }
   };
 
   const removeNewImage = () => {
     setImageFile(null);
+    setImageUrl('');
     setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -72,6 +91,10 @@ const EditProductPage = () => {
     // Frontend Validations
     if (!name.trim()) {
       setError('Product name is required.');
+      return;
+    }
+    if (!category.trim()) {
+      setError('Product category is required.');
       return;
     }
     if (!description.trim()) {
@@ -105,10 +128,13 @@ const EditProductPage = () => {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         imageToSave = uploadRes.data.filename;
+      } else if (imageUrl.trim()) {
+        imageToSave = imageUrl.trim();
       }
 
       await api.put(`/products/${id}`, {
         name,
+        category,
         description,
         price: parseFloat(price),
         quantity: parseInt(quantity, 10),
@@ -141,15 +167,28 @@ const EditProductPage = () => {
               {error && <div className="error-banner">{error}</div>}
 
               <form onSubmit={handleSubmit} className="product-form">
-                <div className="form-group">
-                  <label htmlFor="name">Product Name *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="name">Product Name *</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="category">Category *</label>
+                    <input
+                      type="text"
+                      id="category"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="form-group">
@@ -210,7 +249,7 @@ const EditProductPage = () => {
                   {currentImage ? (
                     <div className="image-preview-box">
                       <img
-                        src={`http://localhost:5000/uploads/${currentImage}`}
+                        src={currentImage.startsWith('http') ? currentImage : `http://localhost:5000/uploads/${currentImage}`}
                         alt="Current Product"
                       />
                       <button type="button" className="remove-image-btn" onClick={removeCurrentImage} title="Remove image">
@@ -223,14 +262,31 @@ const EditProductPage = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="image">Replace Image (Optional)</label>
-                  <input
-                    type="file"
-                    id="image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    ref={fileInputRef}
-                  />
+                  <label>Replace Image (Upload OR Enter URL)</label>
+                  
+                  <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
+                    <div style={{ flex: 1 }}>
+                      <label htmlFor="image" style={{ fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '6px' }}>Local File Upload:</label>
+                      <input
+                        type="file"
+                        id="image"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        ref={fileInputRef}
+                      />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <label htmlFor="imageUrl" style={{ fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '6px' }}>Online Image URL:</label>
+                      <input
+                        type="url"
+                        id="imageUrl"
+                        placeholder="https://example.com/image.jpg"
+                        value={imageUrl}
+                        onChange={handleImageUrlChange}
+                      />
+                    </div>
+                  </div>
+
                   {imagePreview && (
                     <div className="image-preview-box">
                       <img src={imagePreview} alt="New Preview" />

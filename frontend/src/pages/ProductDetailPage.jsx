@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
               <h2>{product.name}</h2>
               {product.image ? (
                 <img
-                  src={`http://localhost:5000/uploads/${product.image}`}
+                  src={product.image.startsWith('http') ? product.image : `http://localhost:5000/uploads/${product.image}`}
                   alt={product.name}
                   className="detail-image"
                 />
@@ -49,6 +49,7 @@ const ProductDetailPage = () => {
               )}
 
               <div className="detail-info">
+                <p><strong>Category:</strong> {product.category}</p>
                 <p><strong>Description:</strong> {product.description}</p>
                 <p><strong>Price:</strong> Rs. {parseFloat(product.price).toFixed(2)}</p>
                 <p><strong>Quantity:</strong> {product.quantity} {product.quantity < 5 && <span className="low-stock-tag">(Low Stock)</span>}</p>

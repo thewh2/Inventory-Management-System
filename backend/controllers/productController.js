@@ -44,10 +44,13 @@ exports.getProductById = async (req, res) => {
 // POST /api/products
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, price, quantity, supplierId, image } = req.body;
+    const { name, description, price, quantity, category, supplierId, image } = req.body;
 
     if (!name || !name.trim()) {
       return res.status(400).json({ message: 'Product name is required.' });
+    }
+    if (!category || !category.trim()) {
+      return res.status(400).json({ message: 'Category is required.' });
     }
     if (!description || !description.trim()) {
       return res.status(400).json({ message: 'Product description is required.' });
@@ -73,6 +76,7 @@ exports.createProduct = async (req, res) => {
       description: description.trim(),
       price: parseFloat(price),
       quantity: parseInt(quantity, 10),
+      category: category.trim(),
       supplierId: parseInt(supplierId, 10),
       image: image || null
     });
@@ -91,10 +95,13 @@ exports.createProduct = async (req, res) => {
 // PUT /api/products/:id
 exports.updateProduct = async (req, res) => {
   try {
-    const { name, description, price, quantity, supplierId, image } = req.body;
+    const { name, description, price, quantity, category, supplierId, image } = req.body;
 
     if (!name || !name.trim()) {
       return res.status(400).json({ message: 'Product name is required.' });
+    }
+    if (!category || !category.trim()) {
+      return res.status(400).json({ message: 'Category is required.' });
     }
     if (!description || !description.trim()) {
       return res.status(400).json({ message: 'Product description is required.' });
@@ -124,6 +131,7 @@ exports.updateProduct = async (req, res) => {
     product.description = description.trim();
     product.price = parseFloat(price);
     product.quantity = parseInt(quantity, 10);
+    product.category = category.trim();
     product.supplierId = parseInt(supplierId, 10);
     if (image !== undefined) {
       product.image = image;

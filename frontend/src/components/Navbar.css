@@ -7,6 +7,9 @@
   border-bottom: none;
   flex-wrap: wrap;
   gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .navbar-brand a {

@@ -33,6 +33,11 @@ const Product = sequelize.define('Product', {
     type: DataTypes.STRING,
     allowNull: true
   },
+  category: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'Uncategorized'
+  },
   supplierId: {
     type: DataTypes.INTEGER,
     allowNull: false

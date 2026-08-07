@@ -29,7 +29,7 @@ app.use('/api/upload', uploadRoutes);
 // Database Sync & Initial Seed
 const initDB = async () => {
   try {
-    await sequelize.sync(); // sync DB tables
+    await sequelize.sync({ alter: true }); // sync DB tables with alter to apply schema changes
     console.log('Database synced successfully.');
 
     // Seed default admin user if not existing
@@ -44,24 +44,33 @@ const initDB = async () => {
     }
 
     // Seed initial demo suppliers if empty
+    let s1, s2;
     const supplierCount = await Supplier.count();
     if (supplierCount === 0) {
-      const s1 = await Supplier.create({
+      s1 = await Supplier.create({
         name: 'Tech World Supplies',
         email: 'contact@techworld.com',
         phone: '+977 9841234567'
       });
-      const s2 = await Supplier.create({
+      s2 = await Supplier.create({
         name: 'Office Depot Solutions',
         email: 'info@officedepot.com',
         phone: '+977 9851098765'
       });
+      console.log('Demo suppliers seeded successfully.');
+    } else {
+      s1 = await Supplier.findOne({ where: { name: 'Tech World Supplies' } });
+      s2 = await Supplier.findOne({ where: { name: 'Office Depot Solutions' } });
+    }
 
+    const productCount = await Product.count();
+    if (productCount === 0 && s1 && s2) {
       await Product.create({
         name: 'Wireless Ergonomic Mouse',
         description: 'High precision optical sensor wireless mouse.',
         price: 29.99,
         quantity: 15,
+        category: 'Electronics',
         supplierId: s1.id,
         image: null
       });
@@ -71,6 +80,7 @@ const initDB = async () => {
         description: 'RGB mechanical keyboard with tactile switches.',
         price: 79.99,
         quantity: 3, // Low stock demo (< 5)
+        category: 'Electronics',
         supplierId: s1.id,
         image: null
       });
@@ -80,11 +90,12 @@ const initDB = async () => {
         description: 'Premium quality 80gsm white printing paper ream.',
         price: 8.50,
         quantity: 4, // Low stock demo (< 5)
+        category: 'Stationery',
         supplierId: s2.id,
         image: null
       });
 
-      console.log('Demo suppliers and products seeded successfully.');
+      console.log('Demo products seeded successfully.');
     }
   } catch (error) {
     console.error('Failed to initialize database:', error);

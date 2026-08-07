@@ -6,11 +6,13 @@ import './ProductFormPage.css';
 
 const AddProductPage = () => {
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
   const [supplierId, setSupplierId] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const [suppliers, setSuppliers] = useState([]);
   const [error, setError] = useState('');
@@ -34,12 +36,28 @@ const AddProductPage = () => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
+      setImageUrl(''); // Clear URL if file is selected
       setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleImageUrlChange = (e) => {
+    const url = e.target.value;
+    setImageUrl(url);
+    if (url) {
+      setImageFile(null); // Clear file if URL is entered
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      setImagePreview(url);
+    } else {
+      setImagePreview(null);
     }
   };
 
   const removeImage = () => {
     setImageFile(null);
+    setImageUrl('');
     setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -53,6 +71,10 @@ const AddProductPage = () => {
     // Frontend Validations
     if (!name.trim()) {
       setError('Product name is required.');
+      return;
+    }
+    if (!category.trim()) {
+      setError('Product category is required.');
       return;
     }
     if (!description.trim()) {
@@ -71,32 +93,42 @@ const AddProductPage = () => {
       setError('Supplier must be selected.');
       return;
     }
-    if (!imageFile) {
-      setError('Image upload is required when creating a new product.');
+    if (!supplierId) {
+      setError('Supplier must be selected.');
+      return;
+    }
+    if (!imageFile && !imageUrl.trim()) {
+      setError('Image upload or Image URL is required when creating a new product.');
       return;
     }
 
     setSubmitting(true);
 
     try {
-      // 1. Upload image using multipart/form-data
-      const formData = new FormData();
-      formData.append('image', imageFile);
+      let finalImage = '';
 
-      const uploadRes = await api.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      if (imageFile) {
+        // 1. Upload image using multipart/form-data
+        const formData = new FormData();
+        formData.append('image', imageFile);
 
-      const uploadedFilename = uploadRes.data.filename;
+        const uploadRes = await api.post('/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        finalImage = uploadRes.data.filename;
+      } else if (imageUrl.trim()) {
+        finalImage = imageUrl.trim();
+      }
 
-      // 2. Save Product details with uploaded image filename
+      // 2. Save Product details with uploaded image filename or URL
       await api.post('/products', {
         name,
+        category,
         description,
         price: parseFloat(price),
         quantity: parseInt(quantity, 10),
         supplierId: parseInt(supplierId, 10),
-        image: uploadedFilename
+        image: finalImage
       });
 
       navigate('/products');
@@ -120,16 +152,30 @@ const AddProductPage = () => {
           {error && <div className="error-banner">{error}</div>}
 
           <form onSubmit={handleSubmit} className="product-form">
-            <div className="form-group">
-              <label htmlFor="name">Product Name *</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Wireless Mouse"
-                required
-              />
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="name">Product Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Wireless Mouse"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="category">Category *</label>
+                <input
+                  type="text"
+                  id="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder="e.g. Electronics"
+                  required
+                />
+              </div>
             </div>
 
             <div className="form-group">
@@ -189,15 +235,31 @@ const AddProductPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="image">Image Upload *</label>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                ref={fileInputRef}
-                required={!imageFile}
-              />
+              <label>Product Image * (Upload OR Enter URL)</label>
+              
+              <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
+                <div style={{ flex: 1 }}>
+                  <label htmlFor="image" style={{ fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '6px' }}>Local File Upload:</label>
+                  <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    ref={fileInputRef}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label htmlFor="imageUrl" style={{ fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '6px' }}>Online Image URL:</label>
+                  <input
+                    type="url"
+                    id="imageUrl"
+                    placeholder="https://example.com/image.jpg"
+                    value={imageUrl}
+                    onChange={handleImageUrlChange}
+                  />
+                </div>
+              </div>
+
               {imagePreview && (
                 <div className="image-preview-box">
                   <img src={imagePreview} alt="Preview" />

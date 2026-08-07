@@ -10,6 +10,7 @@ const ProductListPage = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [loading, setLoading] = useState(true);
@@ -45,7 +46,7 @@ const ProductListPage = () => {
   // Reset to page 1 whenever filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedSupplier]);
+  }, [searchQuery, selectedSupplier, selectedCategory]);
 
   const openDeleteModal = (id, name) => {
     setDeleteTarget({ id, name });
@@ -69,8 +70,12 @@ const ProductListPage = () => {
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesSupplier = selectedSupplier === '' || String(product.supplierId) === String(selectedSupplier);
-    return matchesSearch && matchesSupplier;
+    const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
+    return matchesSearch && matchesSupplier && matchesCategory;
   });
+
+  // Calculate unique categories for dropdown
+  const uniqueCategories = [...new Set(products.map((p) => p.category))].filter(Boolean);
 
   // Calculate pagination slice
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
@@ -104,6 +109,20 @@ const ProductListPage = () => {
           </div>
 
           <div className="filter-group">
+            <label htmlFor="categoryFilter">Filter by Category:</label>
+            <select
+              id="categoryFilter"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {uniqueCategories.map((cat, index) => (
+                <option key={index} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
             <label htmlFor="supplierFilter">Filter by Supplier:</label>
             <select
               id="supplierFilter"
@@ -128,6 +147,7 @@ const ProductListPage = () => {
                   <tr>
                     <th>Image</th>
                     <th>Name</th>
+                    <th>Category</th>
                     <th>Price (Rs.)</th>
                     <th>Quantity</th>
                     <th>Status</th>
@@ -149,7 +169,7 @@ const ProductListPage = () => {
                           <td>
                             {product.image ? (
                               <img
-                                src={`http://localhost:5000/uploads/${product.image}`}
+                                src={product.image.startsWith('http') ? product.image : `http://localhost:5000/uploads/${product.image}`}
                                 alt={product.name}
                                 className="thumbnail"
                               />
@@ -160,6 +180,7 @@ const ProductListPage = () => {
                           <td>
                             <strong>{product.name}</strong>
                           </td>
+                          <td>{product.category}</td>
                           <td>Rs. {parseFloat(product.price).toFixed(2)}</td>
                           <td>{product.quantity}</td>
                           <td>

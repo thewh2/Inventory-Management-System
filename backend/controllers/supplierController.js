@@ -5,7 +5,7 @@ const Product = require('../models/Product');
 exports.getAllSuppliers = async (req, res) => {
   try {
     const suppliers = await Supplier.findAll({
-      order: [['id', 'DESC']]
+      order: [['id', 'ASC']]
     });
     return res.status(200).json(suppliers);
   } catch (error) {

@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
 import ProductListPage from './pages/ProductListPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AddProductPage from './pages/AddProductPage';
@@ -28,6 +29,7 @@ function App() {
 
               {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/products" element={<ProductListPage />} />
                 <Route path="/products/add" element={<AddProductPage />} />
                 <Route path="/products/edit/:id" element={<EditProductPage />} />
@@ -39,7 +41,7 @@ function App() {
               </Route>
 
               {/* Default Redirection */}
-              <Route path="*" element={<Navigate to="/products" replace />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </div>
           <Footer />
