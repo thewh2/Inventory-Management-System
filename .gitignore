@@ -26,11 +26,11 @@ frontend/dist/
 frontend/build/
 
 # Database files
-backend/database.sqlite
+# backend/database.sqlite
 
 # Uploaded files
-backend/uploads/*
-!backend/uploads/.gitkeep
+# backend/uploads/*
+# !backend/uploads/.gitkeep
 
 # macOS
 .DS_Store
