@@ -13,29 +13,37 @@ import SupplierListPage from './pages/SupplierListPage';
 import AddSupplierPage from './pages/AddSupplierPage';
 import EditSupplierPage from './pages/EditSupplierPage';
 
+// Components
+import Footer from './components/Footer';
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          {/* Public Route */}
-          <Route path="/login" element={<LoginPage />} />
+        <div className="app-wrapper">
+          <div className="main-content">
+            <Routes>
+              {/* Public Route */}
+              <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/products" element={<ProductListPage />} />
-            <Route path="/products/add" element={<AddProductPage />} />
-            <Route path="/products/edit/:id" element={<EditProductPage />} />
-            <Route path="/products/view/:id" element={<ProductDetailPage />} />
+              {/* Protected Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/products" element={<ProductListPage />} />
+                <Route path="/products/add" element={<AddProductPage />} />
+                <Route path="/products/edit/:id" element={<EditProductPage />} />
+                <Route path="/products/view/:id" element={<ProductDetailPage />} />
 
-            <Route path="/suppliers" element={<SupplierListPage />} />
-            <Route path="/suppliers/add" element={<AddSupplierPage />} />
-            <Route path="/suppliers/edit/:id" element={<EditSupplierPage />} />
-          </Route>
+                <Route path="/suppliers" element={<SupplierListPage />} />
+                <Route path="/suppliers/add" element={<AddSupplierPage />} />
+                <Route path="/suppliers/edit/:id" element={<EditSupplierPage />} />
+              </Route>
 
-          {/* Default Redirection */}
-          <Route path="*" element={<Navigate to="/products" replace />} />
-        </Routes>
+              {/* Default Redirection */}
+              <Route path="*" element={<Navigate to="/products" replace />} />
+            </Routes>
+          </div>
+          <Footer />
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );

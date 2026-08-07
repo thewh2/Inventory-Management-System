@@ -1,6 +1,6 @@
 # Inventory Management System
 
-A full-stack web application built for managing products and suppliers. Developed as a university assignment.
+A full-stack web application built for managing products and suppliers. Developed as a university assignment by **Chandan Kumar Thakur**.
 
 ## Technologies Used
 - **Frontend:** React, React Router, Axios, vanilla CSS
