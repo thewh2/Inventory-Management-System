@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../api/axios';
+import api, { getUploadUrl } from '../api/axios';
 import Navbar from '../components/Navbar';
 import ConfirmModal from '../components/ConfirmModal';
 import CachedImage from '../components/CachedImage';
@@ -169,7 +169,7 @@ const ProductListPage = () => {
                         <tr key={product.id} className={isOutOfStock ? 'out-of-stock-row' : isLowStock ? 'low-stock-row' : ''}>
                           <td>
                             <CachedImage
-                              src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:5000/uploads/${product.image}`) : null}
+                              src={product.image ? (product.image.startsWith('http') ? product.image : getUploadUrl(product.image)) : null}
                               alt={product.name}
                               className="thumbnail"
                               fallbackClassName="no-img"

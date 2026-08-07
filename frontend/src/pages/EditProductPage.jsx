@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import api from '../api/axios';
+import api, { getUploadUrl } from '../api/axios';
 import Navbar from '../components/Navbar';
 import './ProductFormPage.css';
 
@@ -249,10 +249,10 @@ const EditProductPage = () => {
                   {currentImage ? (
                     <div className="image-preview-box">
                       <img
-                        src={currentImage.startsWith('http') ? currentImage : `http://localhost:5000/uploads/${currentImage}`}
+                        src={currentImage.startsWith('http') ? currentImage : getUploadUrl(currentImage)}
                         alt="Current Product"
-                      />
-                      <button type="button" className="remove-image-btn" onClick={removeCurrentImage} title="Remove image">
+                        className="current-image-preview"
+                      /><button type="button" className="remove-image-btn" onClick={removeCurrentImage} title="Remove image">
                         ×
                       </button>
                     </div>

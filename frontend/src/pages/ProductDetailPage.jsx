@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import api from '../api/axios';
+import api, { getUploadUrl } from '../api/axios';
 import Navbar from '../components/Navbar';
 import CachedImage from '../components/CachedImage';
 import './ProductDetailPage.css';
@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
             <div className="detail-content">
               <h2>{product.name}</h2>
               <CachedImage
-                src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:5000/uploads/${product.image}`) : null}
+                src={product.image ? (product.image.startsWith('http') ? product.image : getUploadUrl(product.image)) : null}
                 alt={product.name}
                 className="detail-image"
                 fallbackClassName="no-img"
