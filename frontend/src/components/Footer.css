@@ -1,6 +1,5 @@
 .footer {
-  background-color: var(--card-bg);
-  border-top: 1px solid var(--border-color);
+  background-color: var(--primary-dark);
   padding: 24px;
   text-align: center;
   margin-top: auto;
@@ -12,19 +11,19 @@
 }
 
 .footer-content p {
-  color: var(--text-muted);
+  color: #A1D99B;
   font-size: 14px;
   margin: 4px 0;
 }
 
 .footer-content a {
-  color: var(--primary);
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .footer-content a:hover {
-  color: var(--primary-hover);
+  color: #C7E9C0;
   text-decoration: underline;
 }

@@ -4,6 +4,7 @@
   align-items: center;
   min-height: 100vh;
   padding: 24px;
+  background: linear-gradient(135deg, var(--bg-color) 0%, var(--bg-accent) 100%);
 }
 
 .login-card {
@@ -19,7 +20,7 @@
 .login-card h2 {
   margin-top: 0;
   margin-bottom: 24px;
-  color: var(--text-main);
+  color: var(--primary-dark);
   font-size: 24px;
   text-align: center;
   letter-spacing: -0.5px;
@@ -62,12 +63,12 @@
   font-size: 14px;
   outline: none;
   font-family: inherit;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-group input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(65, 171, 93, 0.15);
 }
 
 .login-btn {
@@ -85,4 +86,34 @@
 
 .login-btn:hover {
   background-color: var(--primary-hover);
+}
+
+/* Password eye toggle */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.eye-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.eye-toggle:hover {
+  color: var(--primary);
 }
