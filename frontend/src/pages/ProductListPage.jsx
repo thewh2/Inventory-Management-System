@@ -102,61 +102,63 @@ const ProductListPage = () => {
         {loading ? (
           <p>Loading products...</p>
         ) : (
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price ($)</th>
-                <th>Quantity</th>
-                <th>Supplier</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.length === 0 ? (
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center' }}>No products found.</td>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Price ($)</th>
+                  <th>Quantity</th>
+                  <th>Supplier</th>
+                  <th>Actions</th>
                 </tr>
-              ) : (
-                filteredProducts.map((product) => {
-                  const isLowStock = product.quantity < 5;
-                  return (
-                    <tr key={product.id} className={isLowStock ? 'low-stock' : ''}>
-                      <td>
-                        {product.image ? (
-                          <img
-                            src={`http://localhost:5000/uploads/${product.image}`}
-                            alt={product.name}
-                            className="thumbnail"
-                          />
-                        ) : (
-                          <span className="no-img">No Image</span>
-                        )}
-                      </td>
-                      <td>
-                        <strong>{product.name}</strong>
-                        {isLowStock && <span className="low-stock-badge"> (Low Stock)</span>}
-                      </td>
-                      <td>${parseFloat(product.price).toFixed(2)}</td>
-                      <td>{product.quantity}</td>
-                      <td>{product.Supplier ? product.Supplier.name : 'N/A'}</td>
-                      <td className="actions-cell">
-                        <Link to={`/products/view/${product.id}`} className="view-btn">View</Link>
-                        <Link to={`/products/edit/${product.id}`} className="edit-btn">Edit</Link>
-                        <button
-                          onClick={() => handleDelete(product.id, product.name)}
-                          className="delete-btn"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredProducts.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: 'center' }}>No products found.</td>
+                  </tr>
+                ) : (
+                  filteredProducts.map((product) => {
+                    const isLowStock = product.quantity < 5;
+                    return (
+                      <tr key={product.id} className={isLowStock ? 'low-stock' : ''}>
+                        <td>
+                          {product.image ? (
+                            <img
+                              src={`http://localhost:5000/uploads/${product.image}`}
+                              alt={product.name}
+                              className="thumbnail"
+                            />
+                          ) : (
+                            <span className="no-img">No Image</span>
+                          )}
+                        </td>
+                        <td>
+                          <strong>{product.name}</strong>
+                          {isLowStock && <span className="low-stock-badge"> (Low Stock)</span>}
+                        </td>
+                        <td>${parseFloat(product.price).toFixed(2)}</td>
+                        <td>{product.quantity}</td>
+                        <td>{product.Supplier ? product.Supplier.name : 'N/A'}</td>
+                        <td className="actions-cell">
+                          <Link to={`/products/view/${product.id}`} className="view-btn">View</Link>
+                          <Link to={`/products/edit/${product.id}`} className="edit-btn">Edit</Link>
+                          <button
+                            onClick={() => handleDelete(product.id, product.name)}
+                            className="delete-btn"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

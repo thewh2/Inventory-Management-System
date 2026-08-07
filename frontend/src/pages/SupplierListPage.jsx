@@ -54,42 +54,44 @@ const SupplierListPage = () => {
         {loading ? (
           <p>Loading suppliers...</p>
         ) : (
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Supplier Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {suppliers.length === 0 ? (
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center' }}>No suppliers found.</td>
+                  <th>ID</th>
+                  <th>Supplier Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
                 </tr>
-              ) : (
-                suppliers.map((supplier) => (
-                  <tr key={supplier.id}>
-                    <td>{supplier.id}</td>
-                    <td><strong>{supplier.name}</strong></td>
-                    <td>{supplier.email}</td>
-                    <td>{supplier.phone}</td>
-                    <td className="actions-cell">
-                      <Link to={`/suppliers/edit/${supplier.id}`} className="edit-btn">Edit</Link>
-                      <button
-                        onClick={() => handleDelete(supplier.id, supplier.name)}
-                        className="delete-btn"
-                      >
-                        Delete
-                      </button>
-                    </td>
+              </thead>
+              <tbody>
+                {suppliers.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: 'center' }}>No suppliers found.</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  suppliers.map((supplier) => (
+                    <tr key={supplier.id}>
+                      <td>{supplier.id}</td>
+                      <td><strong>{supplier.name}</strong></td>
+                      <td>{supplier.email}</td>
+                      <td>{supplier.phone}</td>
+                      <td className="actions-cell">
+                        <Link to={`/suppliers/edit/${supplier.id}`} className="edit-btn">Edit</Link>
+                        <button
+                          onClick={() => handleDelete(supplier.id, supplier.name)}
+                          className="delete-btn"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
