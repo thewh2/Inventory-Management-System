@@ -154,9 +154,13 @@
   border-bottom: none;
 }
 
-/* Low stock highlight (< 5 quantity) */
-.data-table tr.low-stock {
-  background-color: var(--danger-bg) !important;
+/* Stock row highlights */
+.data-table tr.out-of-stock-row {
+  background-color: #fef2f2 !important;
+}
+
+.data-table tr.low-stock-row {
+  background-color: #fffbeb !important;
 }
 
 .low-stock-badge {

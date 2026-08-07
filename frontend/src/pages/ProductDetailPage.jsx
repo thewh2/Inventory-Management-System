@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
+import CachedImage from '../components/CachedImage';
 import './ProductDetailPage.css';
 
 const ProductDetailPage = () => {
@@ -38,15 +39,12 @@ const ProductDetailPage = () => {
           ) : product ? (
             <div className="detail-content">
               <h2>{product.name}</h2>
-              {product.image ? (
-                <img
-                  src={product.image.startsWith('http') ? product.image : `http://localhost:5000/uploads/${product.image}`}
-                  alt={product.name}
-                  className="detail-image"
-                />
-              ) : (
-                <div className="no-image-box">No Image Uploaded</div>
-              )}
+              <CachedImage
+                src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:5000/uploads/${product.image}`) : null}
+                alt={product.name}
+                className="detail-image"
+                fallbackClassName="no-img"
+              />
 
               <div className="detail-info">
                 <p><strong>Category:</strong> {product.category}</p>
